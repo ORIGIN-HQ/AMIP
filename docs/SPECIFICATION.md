@@ -3,7 +3,7 @@
 **AI-Machine Interface Protocol**
 **Version:** 1.0.0
 **Status:** Draft
-**License:** Apache-2.0
+**License:** MIT
 
 ---
 
