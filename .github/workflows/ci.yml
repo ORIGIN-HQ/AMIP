@@ -102,7 +102,7 @@ jobs:
             exit "$COLLECT_EXIT"
           else
             pytest -v \
-              --cov=. \
+              --cov=amip \
               --cov-report=term-missing \
               --cov-fail-under=90
           fi
