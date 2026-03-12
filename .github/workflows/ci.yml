@@ -89,7 +89,14 @@ jobs:
           set -e
 
           if [ "$COLLECT_EXIT" -eq 5 ]; then
-            echo "No tests collected yet — skipping pytest (expected at CI bootstrap stage)"
+            # Determine whether any test files actually exist
+            if [ -d "tests" ] || find . -name "test_*.py" | grep -q .; then
+              echo "pytest could not discover tests even though test files exist"
+              echo "Check pytest configuration or test naming"
+              exit 1
+            else
+              echo "No tests exist yet — skipping pytest (expected during CI bootstrap)"
+            fi
           elif [ "$COLLECT_EXIT" -ne 0 ]; then
             echo "pytest --collect-only failed with unexpected exit code $COLLECT_EXIT"
             exit "$COLLECT_EXIT"
@@ -121,9 +128,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
-      - name: Install security tools
-        run: pip install pip-audit bandit[toml]
-
       - name: Audit dependencies
         # --skip-editable ignores the local package (not on PyPI yet).
         # Runs once here rather than in every job to avoid redundant scans.
@@ -142,6 +146,10 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
     needs: quality
+
+    permissions:
+    contents: read
+    pull-requests: read
 
     steps:
       - uses: actions/checkout@v4

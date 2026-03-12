@@ -48,7 +48,7 @@ testpaths = ["tests"]
 addopts = "--tb=short -v"
 
 [tool.coverage.run]
-source = ["AMIP"]
+source = ["amip"]
 omit = ["tests/*"]
 
 [tool.coverage.report]
