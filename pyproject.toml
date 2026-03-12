@@ -41,7 +41,7 @@ Issues = "https://github.com/ORIGIN-HQ/AMIP/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["AMIP*"]
+include = ["amip*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

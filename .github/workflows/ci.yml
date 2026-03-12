@@ -84,7 +84,7 @@ jobs:
           # first PR (CI bootstrap). Once test files exist, the full suite
           # runs with 90% coverage enforced as required by the issue spec.
           set +e
-          pytest --collect-only -q 2>/dev/null
+          pytest --collect-only -q
           COLLECT_EXIT=$?
           set -e
 
