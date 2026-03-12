@@ -82,13 +82,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
+      - name: Install security tools
+        run: |
+          pip install pip-audit bandit[toml]
+
+      - name: Audit dependencies
+        run: pip-audit
+
       - name: Run tests
         run: |
-          pytest -v --cov=. --cov-report=term-missing || echo "No tests yet"
+          pytest -v --cov=. --cov-report=term-missing || \
+          ([ $? -eq 5 ] && echo "No tests collected — skipping" || exit $?)
 
   security:
     name: Security scan
     runs-on: ubuntu-24.04
+    needs: quality
 
     steps:
       - uses: actions/checkout@v4
@@ -111,6 +120,7 @@ jobs:
     name: Dependency review
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
+    needs: quality
 
     steps:
       - uses: actions/checkout@v4
