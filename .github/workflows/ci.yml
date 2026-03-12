@@ -79,14 +79,25 @@ jobs:
 
       - name: Run tests
         run: |
-          # Use --collect-only to detect whether any tests exist before running.
-          # Exit code 5 means "no tests collected", which is expected until
-          # test files are added in a future issue.
-          pytest --collect-only -q 2>/dev/null; COLLECT_EXIT=$?
+          # Probe for tests without failing the step if none are found yet.
+          # Exit code 5 = "no tests collected" — valid while this is the
+          # first PR (CI bootstrap). Once test files exist, the full suite
+          # runs with 90% coverage enforced as required by the issue spec.
+          set +e
+          pytest --collect-only -q 2>/dev/null
+          COLLECT_EXIT=$?
+          set -e
+
           if [ "$COLLECT_EXIT" -eq 5 ]; then
-            echo "No tests collected yet — skipping pytest"
+            echo "No tests collected yet — skipping pytest (expected at CI bootstrap stage)"
+          elif [ "$COLLECT_EXIT" -ne 0 ]; then
+            echo "pytest --collect-only failed with unexpected exit code $COLLECT_EXIT"
+            exit "$COLLECT_EXIT"
           else
-            pytest -v --cov=. --cov-report=term-missing
+            pytest -v \
+              --cov=. \
+              --cov-report=term-missing \
+              --cov-fail-under=90
           fi
 
   security:
