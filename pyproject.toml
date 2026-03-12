@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "amip"
+name = "AMIP"
 version = "1.0.0"
 description = "AI-Machine Interface Protocol: hardware-agnostic middleware connecting AI brains to robots safely."
 readme = "README.md"
@@ -41,14 +41,14 @@ Issues = "https://github.com/ORIGIN-HQ/AMIP/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["amip*"]
+include = ["AMIP*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--tb=short -v"
 
 [tool.coverage.run]
-source = ["amip"]
+source = ["AMIP"]
 omit = ["tests/*"]
 
 [tool.coverage.report]
