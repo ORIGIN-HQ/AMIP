@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "AMIP"
+name = "amip"
 version = "1.0.0"
 description = "AI-Machine Interface Protocol: hardware-agnostic middleware connecting AI brains to robots safely."
 readme = "README.md"
