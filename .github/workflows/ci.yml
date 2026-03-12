@@ -28,6 +28,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
+      - name: Install security tools
+        run: |
+          pip install pip-audit bandit[toml]
+
+      - name: Audit dependencies
+        run: pip-audit
+
       - name: Lint (ruff)
         run: |
           if find . -name "*.py" -not -path "./.venv/*" | grep -q .; then
@@ -46,10 +53,10 @@ jobs:
 
       - name: Type check
         run: |
-          if find . -name "*.py" -not -path "./.venv/*" -not -path "./build/*" | grep -q .; then
-            mypy amip/
+          if [ -d "AMIP" ]; then
+            mypy AMIP/
           else
-            echo "No Python source files yet — skipping mypy"
+            echo "AMIP/ directory does not exist — skipping mypy"
           fi
 
   tests:
