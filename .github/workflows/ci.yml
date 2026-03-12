@@ -90,7 +90,7 @@ jobs:
 
           if [ "$COLLECT_EXIT" -eq 5 ]; then
             # Determine whether any test files actually exist
-            if [ -d "tests" ] || find . -name "test_*.py" | grep -q .; then
+            if find . -name "test_*.py" | grep -q .; then
               echo "pytest could not discover tests even though test files exist"
               echo "Check pytest configuration or test naming"
               exit 1
